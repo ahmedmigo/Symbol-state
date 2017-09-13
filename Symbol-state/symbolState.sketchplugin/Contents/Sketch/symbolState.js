@@ -58,6 +58,7 @@ function setKeyOrder(alert,order) {
 
 function getLayoutSettings(context,type,stateArray) {
 	// Document variables
+    log("heree")
 	var page = context.document.currentPage();
 	// Setting variables
 	var defaultSettings = {};
@@ -110,14 +111,14 @@ function getLayoutSettings(context,type,stateArray) {
         if (responseCode == 1000) {
             if (type == "getStates"){
                 log(stateArray[[groupGranularityValue indexOfSelectedItem]])
-                setStateToSymbole(stateArray[[groupGranularityValue indexOfSelectedItem]])
+                setStateToSymbole(context,stateArray[[groupGranularityValue indexOfSelectedItem]])
             }
             else if(type == "deleteState"){
-                deleteStatefromSymbole(stateArray[[groupGranularityValue indexOfSelectedItem]])
+                deleteStatefromSymbole(context,stateArray[[groupGranularityValue indexOfSelectedItem]])
             }
             else if (type == "setState"){
                 var overrides = getCurrentInstance(context);
-                addStateToMasterSymboleDocumentData(overrides,[layoutMaxValue stringValue])
+                addStateToMasterSymboleDocumentData(context,overrides,[layoutMaxValue stringValue])
                 log([layoutMaxValue stringValue])
             }
         }
@@ -163,7 +164,7 @@ function getInstanceOverrides (instance) {
 }
 
 
-function setStateToSymbole (name)
+function setStateToSymbole(context,name)
 {
     var Parentselectedlayer = context.selection[0].symbolMaster()
     var selection = context.selection[0];
@@ -172,7 +173,7 @@ function setStateToSymbole (name)
     selection.overrides = overridesStates[name]
 }
 
-function deleteStatefromSymbole (name)
+function deleteStatefromSymbole (context,name)
 {
     var Parentselectedlayer = context.selection[0].symbolMaster()
     var overridesStates = context.command.valueForKey_onLayer('state',Parentselectedlayer);
@@ -180,7 +181,7 @@ function deleteStatefromSymbole (name)
     log(overridesStates)
 }
 
-function addStateToMasterSymboleDocumentData(override,name)
+function addStateToMasterSymboleDocumentData(context,override,name)
 {
     var docData = context.document.documentData();
     var command = context.command;
@@ -252,7 +253,7 @@ function isEmpty(obj){
     }
 }
 
-function getSymbolStates() {
+function getSymbolStates(context) {
     var Parentselectedlayer = context.selection[0].symbolMaster()
     var states = context.command.valueForKey_onLayer('state',Parentselectedlayer);
     if (states){
@@ -263,7 +264,7 @@ function getSymbolStates() {
     }
 }
 
-function deleteSymbolStates() {
+function deleteSymbolStates(context) {
     var Parentselectedlayer = context.selection[0].symbolMaster()
     var states = context.command.valueForKey_onLayer('state',Parentselectedlayer);
     if (states){
@@ -275,13 +276,7 @@ function deleteSymbolStates() {
 }
 
 
-function setStatus()
+function setStatus(context)
 {
     getLayoutSettings(context,"setState")
 }
-
-//deleteSymbolStates()
-//setStatus()
-getSymbolStates()
-//var array = ['1st','2nd','3rd','4th','5th','6th','7th','8th'];
-//getLayoutSettings(context)

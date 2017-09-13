@@ -9,25 +9,24 @@
     "commands" : [
     {
       "script" : "symbolState.js",
-      "handler" : "setStatus()",
-      "shortcut" : "cmd shift u",
+      "handler" : "setStatus",
+      "shortcut" : "cmd shift e",
       "name" : "Add New State",
-      "identifier" : "symbol.State"
+      "identifier" : "set.State"
     },
     {
       "script" : "symbolState.js",
-      "handler" : "deleteSymbolStates()",
-      "shortcut" : "cmd shift u",
+      "handler" : "deleteSymbolStates",
+      "shortcut" : "cmd shift r",
       "name" : "Delete State",
-      "identifier" : "symbol.State"
+      "identifier" : "delete.State"
     },
     {
       "script" : "symbolState.js",
-      "handler" : "getSymbolStates()",
-      "shortcut" : "cmd shift u",
-      "name" : "get States",
-      "identifier" : "symbol.State"
-    }
-    
-  ],
+      "handler" : "getSymbolStates",
+      "shortcut" : "cmd shift w",
+      "name" : "Get States",
+      "identifier" : "get.State"
+    } 
+  ]
 }
