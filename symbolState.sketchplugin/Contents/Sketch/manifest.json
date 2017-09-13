@@ -1,0 +1,33 @@
+{
+    "name" : "Symbol State",
+    "identifier" : "symbol.state.plugin",
+    "version" : "1.0",
+    "description" : "Make states from symbol instance",
+    "authorEmail" : "ahmad.migo@gmail.com",
+    "author" : "Ahmed Genaidy",
+
+    "commands" : [
+    {
+      "script" : "symbolState.js",
+      "handler" : "setStatus()",
+      "shortcut" : "cmd shift u",
+      "name" : "Add New State",
+      "identifier" : "symbol.State"
+    },
+    {
+      "script" : "symbolState.js",
+      "handler" : "deleteSymbolStates()",
+      "shortcut" : "cmd shift u",
+      "name" : "Delete State",
+      "identifier" : "symbol.State"
+    },
+    {
+      "script" : "symbolState.js",
+      "handler" : "getSymbolStates()",
+      "shortcut" : "cmd shift u",
+      "name" : "get States",
+      "identifier" : "symbol.State"
+    }
+    
+  ],
+}
