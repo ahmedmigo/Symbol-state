@@ -1,2 +1,2 @@
 # Symbole-state-sketchplugin
-UNDER CONSTRUCTION
+UNDER CONSTRUCTION# Symbol-state
