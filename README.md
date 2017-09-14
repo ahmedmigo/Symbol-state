@@ -1,4 +1,4 @@
-# Symbole State Sketchplugin Plugin
+# Symbol State Sketchplugin Plugin
 
 <img align="center" src="icon.png">
 <img align="right" src="screenshot.png">
@@ -11,8 +11,8 @@ give me your thoughts and if it will be useful or not
 
 <h1> How it works </h1>
 <p>
-first go to any symbole instance and modify the overrides as you wish
-then go to Symbole state plugin and select Add Symbole State, After that write the name you want for this state,
+first go to any symbol instance and modify the overrides as you wish
+then go to Symbol state plugin and select Add Symbol State, After that write the name you want for this state,
 
-then create any instance from this symbole and select from Symbole state plugin "Set Symbole State" you will find the state you saved in the this symbole in the drop down menu select it then your saved overrides will be applied to the selected instance
+then create any instance from this symbol and select from Symbol state plugin "Set Symbol State" you will find the state you saved in the this symbol in the drop down menu select it then your saved overrides will be applied to the selected instance
 </p>
