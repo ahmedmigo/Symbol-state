@@ -58,7 +58,6 @@ function setKeyOrder(alert,order) {
 
 function getLayoutSettings(context,type,stateArray) {
 	// Document variables
-    log("heree")
 	var page = context.document.currentPage();
 	// Setting variables
 	var defaultSettings = {};
@@ -77,28 +76,50 @@ function getLayoutSettings(context,type,stateArray) {
 	// If type is set and equal to "config", operate in config mode...
 		// Establish the alert window
 		var alertWindow = COSAlertWindow.new();
+        alertWindow.setIcon(NSImage.alloc().initByReferencingFile(context.plugin.urlForResourceNamed("icon.png").path()));
         alertWindow.setMessageText("Symbol State Plugin");
 
 		// Grouping options
 		var groupFrame = NSView.alloc().initWithFrame(NSMakeRect(0,0,300,124));
 		alertWindow.addAccessoryView(groupFrame);
-
-		var groupGranularityLabel = createLabel('Create Symbole State',12,NSMakeRect(0,108,140,16));
-		groupFrame.addSubview(groupGranularityLabel);
-
-		var groupGranularityDescription = createDescription('Create States for each symbol by adjusting the overrides and save it with a name then use it where ever you want',11,NSMakeRect(0,62,300,42));
-		groupFrame.addSubview(groupGranularityDescription);
-        log(type)
-        if (type == "getStates" || type == "deleteState"){
-	    	var groupGranularityValue = createSelect(stateArray,0,NSMakeRect(0,26,250,28));
+    
+    
+		
+        if (type == "getStates"){
+            var groupGranularityLabel = createLabel('Select Symbole State',12,NSMakeRect(0,108,140,16));
+            groupFrame.addSubview(groupGranularityLabel);
+            
+            var groupGranularityDescription = createDescription('Select the overrides state that you need for this instance',11,NSMakeRect(0,60,300,42));
+            groupFrame.addSubview(groupGranularityDescription);
+	    	var groupGranularityValue = createSelect(stateArray,0,NSMakeRect(0,26,300,28));
 	    	groupFrame.addSubview(groupGranularityValue);
-        } else if (type == "setState"){
+            		// Buttons
+            alertWindow.addButtonWithTitle('GO 🎉 ');
+            alertWindow.addButtonWithTitle('Cancel');
+        } else if (type == "deleteState"){
+            var groupGranularityLabel = createLabel('Delete Symbole State',12,NSMakeRect(0,108,140,16));
+            groupFrame.addSubview(groupGranularityLabel);
+            var groupGranularityDescription = createDescription('Select the state that you want to remove from this symbole',11,NSMakeRect(0,60,300,42));
+            groupFrame.addSubview(groupGranularityDescription);
+	    	var groupGranularityValue = createSelect(stateArray,0,NSMakeRect(0,26,300,28));
+	    	groupFrame.addSubview(groupGranularityValue);
+            alertWindow.addButtonWithTitle('Remove ❌');
+            alertWindow.addButtonWithTitle('Cancel');
+        }
+        else if (type == "setState"){
+            var groupGranularityLabel = createLabel('Add Symbole State',12,NSMakeRect(0,108,140,16));
+            groupFrame.addSubview(groupGranularityLabel);
+            
+            var groupGranularityDescription = createDescription('Write down the state name you want to save',11,NSMakeRect(0,62,300,42));
+            groupFrame.addSubview(groupGranularityDescription);
+	    	var groupGranularityValue = createSelect(stateArray,0,NSMakeRect(0,26,300,28));
+	    	groupFrame.addSubview(groupGranularityValue);
+            		// Buttons
+            alertWindow.addButtonWithTitle('Add');
+            alertWindow.addButtonWithTitle('Cancel');
             var layoutMaxValue = createField("",NSMakeRect(0,26,250,22));
 		    groupFrame.addSubview(layoutMaxValue);
         }
-		// Buttons
-		alertWindow.addButtonWithTitle('OK');
-		alertWindow.addButtonWithTitle('Cancel');
 
 		// Set key order and first responder
 		setKeyOrder(alertWindow,[
@@ -112,14 +133,17 @@ function getLayoutSettings(context,type,stateArray) {
             if (type == "getStates"){
                 log(stateArray[[groupGranularityValue indexOfSelectedItem]])
                 setStateToSymbole(context,stateArray[[groupGranularityValue indexOfSelectedItem]])
+                context.document.showMessage("Your Symbole instance updated to [" + stateArray[[groupGranularityValue indexOfSelectedItem]] + "] Successfully 😎");
             }
             else if(type == "deleteState"){
                 deleteStatefromSymbole(context,stateArray[[groupGranularityValue indexOfSelectedItem]])
+                context.document.showMessage("[" + stateArray[[groupGranularityValue indexOfSelectedItem]] + "] state has been deleted Successfully ❌");
             }
             else if (type == "setState"){
                 var overrides = getCurrentInstance(context);
                 addStateToMasterSymboleDocumentData(context,overrides,[layoutMaxValue stringValue])
                 log([layoutMaxValue stringValue])
+                context.document.showMessage("[" +[layoutMaxValue stringValue] + "] state has been Added Successfully ✅ 😎")
             }
         }
 }
@@ -225,6 +249,23 @@ function getCurrentInstance(context) {
     
 }
 
+function validate (context){
+        var doc = context.document;
+    if (context.selection.count() == 0)
+        {
+            doc.showMessage("No layer selected, Please select symbol instance layer 🤔");
+        }
+    else if (context.selection.count() == 1 && context.selection[0].class() == MSSymbolInstance ) {
+        return true;
+    }
+    else if (context.selection.count() < 1){  
+        doc.showMessage("You are selecting multiple layers, Please select only 1 symbol instance layer that has overrides 🤔");
+    }
+    else {
+        doc.showMessage("layer selected doesn't have overrides, Please select only 1 symbol instance layer that has overrides 🤔");
+    }
+    return false;
+}
 
 function merge_options(obj1,obj2){
     var obj3 = {};
@@ -254,29 +295,36 @@ function isEmpty(obj){
 }
 
 function getSymbolStates(context) {
-    var Parentselectedlayer = context.selection[0].symbolMaster()
-    var states = context.command.valueForKey_onLayer('state',Parentselectedlayer);
-    if (states){
-        var stateValues = Object.keys(states)
-        getLayoutSettings(context,"getStates",stateValues)
-    } else {
-        context.document.showMessage("there is no states saved in this symbol instance" );
-    }
+    if (validate (context))  {
+            var Parentselectedlayer = context.selection[0].symbolMaster()
+            var states = context.command.valueForKey_onLayer('state',Parentselectedlayer);
+            if (states){
+                var stateValues = Object.keys(states)
+                getLayoutSettings(context,"getStates",stateValues)
+            } else {
+                context.document.showMessage("there is no states saved in this symbol instance" );
+            }
+        }
+
 }
 
 function deleteSymbolStates(context) {
-    var Parentselectedlayer = context.selection[0].symbolMaster()
-    var states = context.command.valueForKey_onLayer('state',Parentselectedlayer);
-    if (states){
-        var stateValues = Object.keys(states)
-        getLayoutSettings(context,"deleteState",stateValues)
-    } else {
-        context.document.showMessage("there is no states saved in this symbol instance" );
+    if (validate (context))  {
+        var Parentselectedlayer = context.selection[0].symbolMaster()
+        var states = context.command.valueForKey_onLayer('state',Parentselectedlayer);
+        if (states){
+            var stateValues = Object.keys(states)
+            getLayoutSettings(context,"deleteState",stateValues)
+        } else {
+            context.document.showMessage("there is no states saved in this symbol instance" );
+        }
     }
 }
 
 
 function setStatus(context)
 {
-    getLayoutSettings(context,"setState")
+    if (validate (context))  {
+        getLayoutSettings(context,"setState")
+    }
 }

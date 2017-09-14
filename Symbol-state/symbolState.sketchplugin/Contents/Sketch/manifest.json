@@ -4,29 +4,36 @@
     "version" : "1.0",
     "description" : "Make states from symbol instance",
     "authorEmail" : "ahmad.migo@gmail.com",
+    "URL": "https://github.com/ahmedmigo/Symbol-state",
     "author" : "Ahmed Genaidy",
 
     "commands" : [
     {
       "script" : "symbolState.js",
       "handler" : "setStatus",
-      "shortcut" : "cmd shift e",
-      "name" : "Add New State",
-      "identifier" : "set.State"
+      "shortcut" : "cmd alt e",
+      "name" : "Add Symbole State",
+      "description" : "Add New State for the selected Symbole",
+      "identifier" : "set.State",
+      "icon" : "icon-sr.png"
     },
     {
       "script" : "symbolState.js",
       "handler" : "deleteSymbolStates",
-      "shortcut" : "cmd shift r",
-      "name" : "Delete State",
-      "identifier" : "delete.State"
+      "shortcut" : "cmd alt r",
+      "name" : "Delete Symbole State",
+      "description" : "Delete existing State from the selected Symbole",
+      "identifier" : "delete.State",
+      "icon" : "icon-sr.png"
     },
     {
       "script" : "symbolState.js",
       "handler" : "getSymbolStates",
-      "shortcut" : "cmd shift w",
-      "name" : "Get States",
-      "identifier" : "get.State"
+      "shortcut" : "cmd alt a",
+      "name" : "Set Symbole State",
+      "description" : "Select State from the Symbole states and apply it to instance",
+      "identifier" : "get.State",
+      "icon" : "icon-sr.png"
     } 
   ]
 }
