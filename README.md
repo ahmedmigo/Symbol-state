@@ -1,6 +1,6 @@
 # Symbole State Sketchplugin Plugin
 
-<img align="right" src="icon.png">
+<img align="center" src="icon.png">
 <img align="right" src="screenshot.png">
 
 
