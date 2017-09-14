@@ -91,7 +91,7 @@ function getLayoutSettings(context,type,stateArray) {
             
             var groupGranularityDescription = createDescription('Select the overrides state that you need for this instance',11,NSMakeRect(0,60,300,42));
             groupFrame.addSubview(groupGranularityDescription);
-	    	var groupGranularityValue = createSelect(stateArray,0,NSMakeRect(0,26,300,28));
+	    	var groupGranularityValue = createSelect(stateArray,0,NSMakeRect(0,40,300,28));
 	    	groupFrame.addSubview(groupGranularityValue);
             		// Buttons
             alertWindow.addButtonWithTitle('GO 🎉 ');
@@ -101,7 +101,7 @@ function getLayoutSettings(context,type,stateArray) {
             groupFrame.addSubview(groupGranularityLabel);
             var groupGranularityDescription = createDescription('Select the state that you want to remove from this symbole',11,NSMakeRect(0,60,300,42));
             groupFrame.addSubview(groupGranularityDescription);
-	    	var groupGranularityValue = createSelect(stateArray,0,NSMakeRect(0,26,300,28));
+	    	var groupGranularityValue = createSelect(stateArray,0,NSMakeRect(0,40,300,28));
 	    	groupFrame.addSubview(groupGranularityValue);
             alertWindow.addButtonWithTitle('Remove ❌');
             alertWindow.addButtonWithTitle('Cancel');
@@ -109,16 +109,14 @@ function getLayoutSettings(context,type,stateArray) {
         else if (type == "setState"){
             var groupGranularityLabel = createLabel('Add Symbole State',12,NSMakeRect(0,108,140,16));
             groupFrame.addSubview(groupGranularityLabel);
-            
             var groupGranularityDescription = createDescription('Write down the state name you want to save',11,NSMakeRect(0,62,300,42));
             groupFrame.addSubview(groupGranularityDescription);
-	    	var groupGranularityValue = createSelect(stateArray,0,NSMakeRect(0,26,300,28));
-	    	groupFrame.addSubview(groupGranularityValue);
+            var layoutMaxValue = createField("",NSMakeRect(0,65,250,22));
+		    groupFrame.addSubview(layoutMaxValue);
             		// Buttons
             alertWindow.addButtonWithTitle('Add');
             alertWindow.addButtonWithTitle('Cancel');
-            var layoutMaxValue = createField("",NSMakeRect(0,26,250,22));
-		    groupFrame.addSubview(layoutMaxValue);
+
         }
 
 		// Set key order and first responder

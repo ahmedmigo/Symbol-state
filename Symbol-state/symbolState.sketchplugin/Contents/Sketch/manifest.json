@@ -11,7 +11,7 @@
     {
       "script" : "symbolState.js",
       "handler" : "setStatus",
-      "shortcut" : "cmd alt e",
+      "shortcut" : "cmd alt a",
       "name" : "Add Symbole State",
       "description" : "Add New State for the selected Symbole",
       "identifier" : "set.State",
@@ -29,7 +29,7 @@
     {
       "script" : "symbolState.js",
       "handler" : "getSymbolStates",
-      "shortcut" : "cmd alt a",
+      "shortcut" : "cmd e",
       "name" : "Set Symbole State",
       "description" : "Select State from the Symbole states and apply it to instance",
       "identifier" : "get.State",
