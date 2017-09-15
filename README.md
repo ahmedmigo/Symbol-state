@@ -1,7 +1,7 @@
 # Symbol State Sketchplugin Plugin
 
-<img align="center" src="icon.png">
-<img align="right" src="screenshot.png">
+<img align="center" src="https://github.com/ahmedmigo/Symbol-state/blob/master/icon.png?raw=true">
+<img align="right" src="https://raw.githubusercontent.com/ahmedmigo/Symbol-state/master/screenshot.png">
 
 
 This plugin will make you save your overrides in any symbol in what I called "STATE", then you can re-use this overrides on any instance of this symbol
