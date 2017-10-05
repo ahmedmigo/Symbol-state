@@ -15,6 +15,48 @@ function createField(value,frame) {
 	return field;
 }
 
+
+function createSymboleInstancePreview (instance, StateString) {
+     
+    var exportRequest = MSExportRequest.exportRequestsFromExportableLayer_inRect_useIDForName_(
+        instance,
+        instance.absoluteInfluenceRect(),
+        false
+        ).firstObject()
+
+    exportRequest.format = "png"
+
+    var scaleX = 300 / exportRequest.rect().size.width;
+    var scaleY = (100-20) / exportRequest.rect().size.height;
+
+    if(scaleX<scaleY)
+        exportRequest.scale = scaleX;
+    else
+        exportRequest.scale = scaleY;
+
+    var colorSpace = NSColorSpace.sRGBColorSpace()
+    var exporter = MSExporter.exporterForRequest_colorSpace_(exportRequest, colorSpace)
+    var imageRep = exporter.bitmapImageRep()
+
+    var image = NSImage.alloc().init().autorelease();
+    image.addRepresentation(imageRep);
+
+    cells.objectAtIndex(0).setImagePosition(NSImageAbove);
+    cells.objectAtIndex(0).setImage(image);
+    cells.objectAtIndex(0).setTitle("State: ",StateString);
+    var scrollHeight = matrixHeight;
+    if(matrixHeight > 400)
+        scrollHeight = 400;   
+
+    var listContainer = [[NSScrollView alloc] initWithFrame:NSMakeRect(0,0,cellWidth,scrollHeight)];
+
+    listContainer.setDocumentView(matrix);
+
+    if(scrollHeight != matrixHeight)
+        listContainer.setHasVerticalScroller(true);
+    return listContainer
+}
+
 // create Label header
 function createLabel(text,size,frame) {
 	var label = [[NSTextField alloc] initWithFrame:frame];
@@ -76,7 +118,7 @@ function getLayoutSettings(context,type,stateArray) {
 	// If type is set and equal to "config", operate in config mode...
 		// Establish the alert window
 		var alertWindow = COSAlertWindow.new();
-        alertWindow.setIcon(NSImage.alloc().initByReferencingFile(context.plugin.urlForResourceNamed("icon.png").path()));
+        //alertWindow.setIcon(NSImage.alloc().initByReferencingFile(context.plugin.urlForResourceNamed("icon.png").path()));
         alertWindow.setMessageText("Symbol State Plugin");
 
 		// Grouping options
@@ -101,10 +143,10 @@ function getLayoutSettings(context,type,stateArray) {
             groupFrame.addSubview(groupGranularityLabel);
             var groupGranularityDescription = createDescription('Select the state that you want to remove from this symbol',11,NSMakeRect(0,60,300,42));
             groupFrame.addSubview(groupGranularityDescription);
-	    	var groupGranularityValue = createSelect(stateArray,0,NSMakeRect(0,40,300,28));
-	    	groupFrame.addSubview(groupGranularityValue);
+            var groupGranularityValue = createSelect(stateArray,0,NSMakeRect(0,40,300,28));
+            groupFrame.addSubview(groupGranularityValue);
             alertWindow.addButtonWithTitle('Remove ❌');
-            alertWindow.addButtonWithTitle('Cancel');
+            alertWindow.addButtonWithTitle('Cancel'); 
         }
         else if (type == "setState"){
             var groupGranularityLabel = createLabel('Add Symbol State',12,NSMakeRect(0,108,140,16));
@@ -134,6 +176,7 @@ function getLayoutSettings(context,type,stateArray) {
                 context.document.showMessage("Your Symbol instance updated to [" + stateArray[[groupGranularityValue indexOfSelectedItem]] + "] Successfully 😎");
             }
             else if(type == "deleteState"){
+                log (stateArray[[groupGranularityValue indexOfSelectedItem]])
                 deleteStatefromSymbol(context,stateArray[[groupGranularityValue indexOfSelectedItem]])
                 context.document.showMessage("[" + stateArray[[groupGranularityValue indexOfSelectedItem]] + "] state has been deleted Successfully ❌");
             }
@@ -198,9 +241,12 @@ function setStateToSymbol(context,name)
 function deleteStatefromSymbol (context,name)
 {
     var Parentselectedlayer = context.selection[0].symbolMaster()
-    var overridesStates = context.command.valueForKey_onLayer('state',Parentselectedlayer);
-    delete overridesStates[name];
+    var command = context.command
+    var overridesStates = JSON.parse(JSON.stringify(command.valueForKey_onLayer('state',Parentselectedlayer)));
     log(overridesStates)
+    delete overridesStates[name]
+    log(overridesStates)
+    command.setValue_forKey_onLayer(overridesStates,'state',Parentselectedlayer);
 }
 
 function addStateToMasterSymbolDocumentData(context,override,name)
@@ -310,7 +356,7 @@ function deleteSymbolStates(context) {
     if (validate (context))  {
         var Parentselectedlayer = context.selection[0].symbolMaster()
         var states = context.command.valueForKey_onLayer('state',Parentselectedlayer);
-        if (states){
+        if (states && Object.keys(states).length !== 0){
             var stateValues = Object.keys(states)
             getLayoutSettings(context,"deleteState",stateValues)
         } else {
